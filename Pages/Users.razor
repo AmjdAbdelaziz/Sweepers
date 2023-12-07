@@ -1,0 +1,52 @@
+﻿@page "/users"
+
+@inject HttpClient Http
+@inject NavigationManager Navigation
+
+<h1>Users</h1>
+
+<div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>UserName</th>
+                <th>Email</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (var i = 0; i < Usrs.Count; i++)
+            {
+                <tr>
+                    <td>@Usrs[i].UserName</td>
+                    <td>@Usrs[i].Email</td>
+                </tr>
+
+            }
+        </tbody>
+    </table>
+
+</div>
+
+@code {
+    private List<User> Usrs = new List<User>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            Usrs = await Http.GetFromJsonAsync<List<User>>("api/Users");
+
+        }
+        /*
+        catch (AccessTokenNotAvailableException exception)
+        {
+            exception.Redirect();
+        }
+        */
+        catch (Exception e)
+        {
+            Console.Write(e);
+        }
+
+    }
+}
